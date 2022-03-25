@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html>
+
+    <body style="text-align: center;">
+        <!--<div>
+            <input type="file" accept="image/*">
+        </div>-->
+    
+        <div>
+            <video id="video" src="" style="width: 90vw; height: 70vh;" autoplay></video>
+        </div>
+    
+        <div>
+            <canvas id="videoCanvas" width="1280" height="720" hidden></canvas>
+        </div>
+    
+        <div>
+            <span>Faces: <span id="numberOfFaces"></span></span>
+        </div>
+    
+        <div>
+            <button id="webcamBtn" onclick="">Webcam</button>
+        </div>
+    </body>
+
+</html>
+
+<script>
+
+    const url = "ws://" + window.location.host;
+    const socket = new WebSocket(url);
+
+    /*socket.onopen = function () {
+        socket.send(1);
+    }*/
+
+    socket.onmessage = function (e) {
+        facesSpan = document.getElementById("numberOfFaces");
+        data = JSON.parse(e.data)
+        facesSpan.innerText = data['totalFaces'];
+        console.log(data);
+    }
+
+    const video = document.getElementById("video");
+    const constraints = {
+        audio: false,
+        video: {
+            width: 1280,
+            height: 720,
+        }
+    };
+
+    async function getVideo() {
+        try {
+            let stream = await navigator.mediaDevices.getUserMedia(constraints);
+            window.stream = stream;
+            video.srcObject = stream;
+        } catch (e) {
+
+        }
+    }
+
+    getVideo();
+
+    const canvas = document.getElementById("videoCanvas");
+    function streamVideo() {
+
+        data = canvas.toDataURL();
+
+        socket.send(JSON.stringify({
+            'frame': data
+        }));
+
+    }
+
+    let context = document.getElementById("videoCanvas").getContext('2d');
+    let camBtn = document.getElementById("webcamBtn");
+    camBtn.addEventListener("click", () => {
+        context.drawImage(video, 0, 0, 1280, 720);
+        streamVideo();
+    })
+
+</script>
