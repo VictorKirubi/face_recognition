@@ -1,5 +1,6 @@
 import io
 import json
+import os
 from channels.generic.websocket import AsyncWebsocketConsumer
 from urllib.request import urlopen
 from PIL import Image
@@ -21,7 +22,8 @@ class Consumer(AsyncWebsocketConsumer) :
 
         with urlopen(frame) as response:
             data = response.read()
-            path = "/home/otanga/Documents/Projects-portfolio/face_recognition/app/frames/currentframe.png"
+            rel_path = "app/frames/currentframe.png"
+            path = os.path.abspath(rel_path)
         
             img = Image.open(io.BytesIO(data))
             img.save(path)
