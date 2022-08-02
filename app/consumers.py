@@ -1,3 +1,6 @@
+#Handle websocket server side
+#Moves captured image to frames folder, counts faces and returns the result as json via websocket
+
 import io
 import json
 import os

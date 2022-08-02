@@ -1,3 +1,5 @@
+#Face class with isFace method to count number of faces in image
+
 import cv2
 
 class Face:
