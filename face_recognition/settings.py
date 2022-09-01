@@ -25,14 +25,16 @@ SECRET_KEY = 'django-insecure-h)7=quzkn^=mt+2o-1*gqf0byr(okxc*8e83cdmy3q(_es87)0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+#shows allowed servers to host the application
 ALLOWED_HOSTS = ["localhost", "141.95.24.138", "server.otanga.co.ke"]
 
 
 # Application definition
 
+#any app or library to be used in the application
 INSTALLED_APPS = [
     'app',
-    'channels',
+    'channels', #websocket library
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -74,6 +76,7 @@ WSGI_APPLICATION = 'face_recognition.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+#define the database to be used
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -123,13 +126,15 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Channels
+# Channels websocket
+#Define asgi application
+#redis - connection layer, python and database
 ASGI_APPLICATION = 'face_recognition.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('localhost', 6379)],
+            "hosts": [('localhost', 6379)], #port
         },
     },
 }

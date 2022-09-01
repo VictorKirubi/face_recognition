@@ -38,33 +38,38 @@
 </html>
 
 <script>
-
+    //Gets url for current page
     const url = "ws://" + window.location.host;
+    //Define websocket
     const socket = new WebSocket(url);
 
     /*socket.onopen = function () {
         socket.send(1);
     }*/
 
+    //When socket receives a message it calls the function. On the console there is "something"
     socket.onmessage = function (e) {
         facesSpan = document.getElementById("numberOfFaces");
+        //Data received is in json, changed to normal 
         data = JSON.parse(e.data)
+        //After data has been received recognized the number of faces
         facesSpan.innerText = data['totalFaces'];
         console.log(data);
     }
 
     const video = document.getElementById("video");
     const constraints = {
-        audio: false,
+        audio: false, //Only capture video
         video: {
             width: 1280,
             height: 720,
         }
     };
 
+    //Captures video element and streams
     async function getVideo() {
         try {
-            let stream = await navigator.mediaDevices.getUserMedia(constraints);
+            let stream = await navigator.mediaDevices.getUserMedia(constraints); //Tells browser to turn on the webcam
             window.stream = stream;
             video.srcObject = stream;
         } catch (e) {
@@ -72,24 +77,26 @@
         }
     }
 
-    getVideo();
-
+    getVideo(); //Calls function to activate video stream
+    // captures photo 
     const canvas = document.getElementById("videoCanvas");
     async function streamVideo() {
-
+        //converts photo to dataurl(binary ish)
         data = canvas.toDataURL();
-
-        socket.send(JSON.stringify({
-            'frame': data
+        //converts photo already converted to dataurl to JSON to be sent to the server
+        socket.send(JSON.stringify({ 
+            'frame': data //consumer.py
         }));
 
     }
 
     let context = document.getElementById("videoCanvas").getContext('2d');
+    // Tells canvas it is a 2D. Search document with id of video canvas line 26. Saves on variable context
     let camBtn = document.getElementById("webcamBtn");
     camBtn.addEventListener("click", () => {
+        //Draw the image on the canvas
         context.drawImage(video, 0, 0, 1280, 720);
-        streamVideo();
+        streamVideo(); //calls function, line 82
     })
 
 </script>

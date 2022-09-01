@@ -1,3 +1,4 @@
+#Data used to tell the computer what to expect of a human face
 <?xml version="1.0"?>
 <!--
     Stump-based 24x24 discrete(?) adaboost frontal face detector.

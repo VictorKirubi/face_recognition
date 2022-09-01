@@ -16,8 +16,10 @@ Including another URLconf
 from unicodedata import name
 from django.contrib import admin
 from django.urls import path
+#home page, webcam. Imports from app as a function
 from app.views import home
 
+#defines where a path is directed
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name="home"),

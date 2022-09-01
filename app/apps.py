@@ -1,3 +1,4 @@
+#auto generated. Defines the apps
 from django.apps import AppConfig
 
 
